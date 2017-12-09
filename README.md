@@ -1,6 +1,13 @@
 # push file manager
 ![Website Preview](https://raw.githubusercontent.com/JannisBecker/push/master/res/img/readme-header.png)
-A minimalistic self-hosted web file management solution
+
+## Introduction
+This is a slim and performant implementation of a web file management service,
+including file upload, rename, move and removal capabilities, folder support, user accounts,
+batch file operations and more!
+
+## Interactive demo
+I hosted a demo on my website, which can be found [here](http://pushdemo.jannisbecker.me).
 
 ## First setup
 First of all, use the /res/sql/push-db.sql file to set up the required MySQL databases. 
@@ -14,5 +21,4 @@ which in this case is a simple key needed for Upload to work.
 Again, rename this file to index.php after you're done,
 and you're good to go!
 
-## Interactive demo
-I hosted a volatile demo on my website, which can be found [here](http://pushdemo.jannisbecker.me).
+
