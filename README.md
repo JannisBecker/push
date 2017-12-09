@@ -12,3 +12,7 @@ Then open up /upload/index.template.php, again filling in the data required,
 which in this case is a simple key needed for Upload to work.
 Again, rename this file to index.php after you're done,
 and you're good to go!
+
+### Interactive demo
+I hosted a volatile demo on my website, which you can find here: 
+[demo.push.jannisbecker.me](http://demo.push.jannisbecker.me)
