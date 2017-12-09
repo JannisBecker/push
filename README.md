@@ -1,4 +1,5 @@
 # push file manager
+![Website Preview](https://raw.githubusercontent.com/JannisBecker/push/master/res/img/readme-header.png)
 A minimalistic self-hosted web file management solution
 
 ## First setup
