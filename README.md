@@ -14,5 +14,4 @@ Again, rename this file to index.php after you're done,
 and you're good to go!
 
 ### Interactive demo
-I hosted a volatile demo on my website, which you can find here: 
-[demo.push.jannisbecker.me](http://demo.push.jannisbecker.me)
+I hosted a volatile demo on my website, which can be found [here](http://pushdemo.jannisbecker.me).
