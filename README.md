@@ -1,7 +1,7 @@
 # push file manager
 A minimalistic self-hosted web file management solution
 
-### First setup
+## First setup
 First of all, use the /res/sql/push-db.sql file to set up the required MySQL databases. 
 This is where you can add accounts for your users later on.
 
@@ -13,5 +13,5 @@ which in this case is a simple key needed for Upload to work.
 Again, rename this file to index.php after you're done,
 and you're good to go!
 
-### Interactive demo
+## Interactive demo
 I hosted a volatile demo on my website, which can be found [here](http://pushdemo.jannisbecker.me).
