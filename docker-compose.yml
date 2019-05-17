@@ -11,9 +11,13 @@ services:
     volumes: 
       - ${DOCUMENT_ROOT-./}:/var/www/html
   db:
-    image: mysql:8.0
+    image: ./docker/mysql
     restart: always
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: <mysql pw>
+      MYSQL_ROOT_PASSWORD: <mysql root pw>
+      MYSQL_USER: <mysql user>
+      MYSQL_PASSWORD: <mysql pw>
+    ports:
+      - "3306:3306"
   
