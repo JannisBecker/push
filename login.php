@@ -20,14 +20,14 @@
 
 		//Access User DB
 		require_once("res/php/sql-config.php");
-		$conn = mysql_connect($db_host,$db_user,$db_pass);
+		$conn = mysqli_connect($db_host,$db_user,$db_pass);
 		if($conn) {
-			$db = mysql_select_db("anuk_push",$conn);
+			$db = mysqli_select_db($conn,"anuk_push");
 			if($db) {
 				$query = "SELECT u.initial, u.username, u.password, p.* FROM users AS u, preferences AS p WHERE BINARY u.username = '$username' AND p.user_id = u.id";
-				$res = mysql_query($query,$conn);
-				if(mysql_num_rows($res) > 0) {
-					$logindata = mysql_fetch_array($res);
+				$res = mysqli_query($conn,$query);
+				if(mysqli_num_rows($res) > 0) {
+					$logindata = mysqli_fetch_array($res);
 					$error = 0;	//Set to no Error now
 					if($logindata["password"] == md5($password)) {
 						$_SESSION["username"] = $username;

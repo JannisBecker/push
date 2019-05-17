@@ -27,9 +27,10 @@ if(isset($_GET["dl"])) {
 }
 
 $imgexts = array("jpg","jpeg","JPG","png","PNG","gif");
-$videoexts = array("mp4","webm");
-$audioexts = array("mp3","wav");
-$txtexts = array("txt");
+$videoexts = array("mp4","webm","ogg");
+$othermediaexts = array("flv");
+$audioexts = array("mp3","wav","flac");
+$txtexts = array("txt","html","css","conf","yml");
 
 /* Determine file type */
 if(file_exists(getcwd().$file_url)) {
@@ -39,11 +40,13 @@ if(file_exists(getcwd().$file_url)) {
 		$type = "vid";
 	else: if(in_array($ext,$audioexts)):
 		$type = "aud";
+	else: if(in_array($ext,$othermediaexts)):
+		$type = "othmedia";
 	else: if(in_array($ext,$txtexts)):
 		$type = "txt";
 	else:
 		$type = "oth";
-	endif;endif;endif;endif;
+	endif;endif;endif;endif;endif;
 } else {
 	$type = "none";
 }
@@ -58,7 +61,12 @@ if(file_exists(getcwd().$file_url)) {
 		<meta property="og:image" content="<?php echo($file_url);?>" />
 	<?php endif; ?>
 	<link rel="stylesheet" href="/res/css/style.css">
-	<?php if($type == "vid" || $type == "aud") echo("<script src=\"http://api.html5media.info/1.1.8/html5media.min.js\"></script>"); ?>
+	<?php if($type == "vid" || $type == "aud"): ?>
+		<script src="http://api.html5media.info/1.1.8/html5media.min.js"></script>
+	<?php endif; ?>
+	<?php if($type == "othmedia"): ?>
+		<link href="https://vjs.zencdn.net/7.4.1/video-js.css" rel="stylesheet">
+	<?php endif; ?>
 	<script type="text/javascript" src="/res/js/jquery.js"></script>
 </head>
 <body>
@@ -79,6 +87,10 @@ if(file_exists(getcwd().$file_url)) {
 				<video class="wrapped media" width="640" height="400" src="<?php echo($file_url);?>" controls preload></video>
 			<?php break; case "aud": ?>
 				<audio class="wrapped media" width="640" height="400" src="<?php echo($file_url);?>" controls preload></audio>
+			<?php break; case "othmedia": ?>
+				<video class="wrapped media video-js" width="640" height="400" controls preload="auto" data-setup="{}">
+					<source src="<?php echo($file_url);?>">
+				</video>
 			<?php break; case "txt": ?>
 				<p class="wrapped txt">
 					<?php echo nl2br(); 
@@ -111,5 +123,8 @@ $("img.wrapped").click(function() {
 $("div.logo").click(function() {
 	location.href = "/./";
 });
+
 </script>
+<script src="https://vjs.zencdn.net/7.4.1/video.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-flash@2/dist/videojs-flash.min.js"></script>
 </html>

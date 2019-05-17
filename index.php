@@ -317,7 +317,7 @@ include("res/php/helpers.php");
 				"<li class='menu-delete file'><span><i class='fa fa-trash-o'></i> Delete</span></li>"
 			]).show().css({top: y + 15, left: x + 10});
 		} else {
-			var link = "<?php echo($_SERVER['SERVER_NAME']."/".$_SESSION["initial"].$dir."/");?>"+name;
+			var link = "<?php echo("https://".$_SERVER['SERVER_NAME']."/files/".$_SESSION["initial"].str_replace(' ', '%20',$dir)."/");?>"+name;
 			$("ul.contextMenu").append([
 				"<li class='menu-name'><span><i class='fa fa-file-o'></i> "+name+"</span></li>",
 				"<li class='menu-copy copyable' data-clipboard-text='"+link+"'><span><i class='fa fa-files-o'></i> Copy Link</span></li>",
