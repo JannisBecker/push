@@ -8,9 +8,9 @@ if(!isset($_SESSION['initial'])) {
 //Save Preferences
 if(isset($_POST["save"])) {
 	require_once("res/php/sql-config.php");
-	$conn = mysqli_connect($db_host,$db_user,$db_pass);
+	$conn = mysql_connect($db_host,$db_user,$db_pass);
 	if($conn) {
-		$db = mysqli_select_db($conn, "anuk_push");
+		$db = mysql_select_db("anuk_push",$conn);
 		if($db) {
 			$tilesize = $_POST["tilesize"];
 			$navbar = $_POST["navbar"];
@@ -18,7 +18,7 @@ if(isset($_POST["save"])) {
 			$tiles = $_POST["tiles"];
 
 			$query = "UPDATE preferences AS p, users AS u SET p.tilesize = ".$tilesize.", p.tiles = ".$tiles.", p.navbar = ".$navbar.", p.listview = ".$listview." WHERE u.username = '".$_SESSION["username"]."' AND u.id = p.user_id";
-			if(mysqli_query($conn,$query)) {
+			if(mysql_query($query,$conn)) {
 				$_SESSION["prefs"]["tilesize"] = $tilesize;
 				$_SESSION["prefs"]["navbar"] = $navbar;
 				$_SESSION["prefs"]["tilesperpage"] = $tiles;

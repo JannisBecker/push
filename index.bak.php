@@ -60,13 +60,14 @@ include("res/php/helpers.php");
 		</ul>
 		<ul class="viewmode">
 			<li class="view-toggle">View:</li>
-			<li class="view-thumbs"><i class="fa fa-th"></i></li>
+			<li class="view-thumbs current"><i class="fa fa-th"></i></li>
 			<li class="view-list"><i class="fa fa-th-list"></i></li>
 		</ul>
 	</div>
 
 	<div class="content">
 		<ul class="tile-list">
+			<?php include("res/php/listfiles.php"); ?>
 		</ul>
 		<div class="loading">
 			<img src="res/img/loading.svg">
@@ -78,7 +79,7 @@ include("res/php/helpers.php");
 <script>
 	/* Variables */
 	var selectionMode = false;
-	var listViewMode = <?php echo($_SESSION['prefs']['listview']=="1"?"true":"false"); ?>;
+	var listViewMode = false;
 	var uploadMode = false;
 	var selectedItems = new Array();
 	var lastSelected;
@@ -87,7 +88,7 @@ include("res/php/helpers.php");
 
 	var loading = false;
 	var searchterm;
-	var curpage = 0;
+	var page = 1;
 
 	/* General methods */
 
@@ -161,31 +162,8 @@ include("res/php/helpers.php");
 		}
 		listViewMode = doListMode;
 	}
-
-	function loadNextPage() {
-		loading = true;
-		$("div.loading").css("opacity", 1);
-		$.ajax({
-			url: "res/php/listfiles.php",
-			method: "POST",
-			data: { 
-				page: curpage+1,
-				dir: "<?php echo($dir); ?>",
-				listView: listViewMode,
-				search: searchterm
-			}
-		}).done(function(data) {
-			if(data.length > 0 && loading) {
-				var newData = $('<div class=\"page\" hidden></div>').html(data);
-				$("ul.tile-list").append(newData);
-				newData.fadeIn();
-				loading = false;
-				curpage++;
-			}
-			$("div.loading").css("opacity", 0);
-		});
-	}
 	
+
 	/* Listeners */
 	$(document).ready(function() {
 		Dropzone.options.dropzone = {
@@ -197,17 +175,34 @@ include("res/php/helpers.php");
 				formData.append("user", <?php echo("\"".$_SESSION['initial']."/\"");?> );
 			}
 		};
-
-		hookClipboard();
-
-		$('li.view-<?php echo($_SESSION['prefs']['listview']=="1"?"list":"thumbs");?>').addClass("current");
-		loadNextPage();
 	});
+
 
 	/* Load next page if scrolled to bottom */
 	$(window).scroll(function() {
-		if($(window).scrollTop() + $(window).height() > $(document).height() - 150 && !loading) {
-			loadNextPage();
+		if($(window).scrollTop() + $(window).height() > $(document).height() - 50 && !loading) {
+			loading = true;
+			$("div.loading").css("opacity", 1);
+			$.ajax({
+				url: "res/php/listfiles.php",
+				method: "POST",
+				data: { 
+					page: page+1,
+					dir: "<?php echo($dir); ?>",
+					listView: listViewMode,
+					search: searchterm
+				}
+			}).done(function(data) {
+				if(data.length > 0 && loading) {
+					var newData = $('<div/>').html(data);
+
+					$("ul.tile-list").append(newData);
+					newData.show(300);
+					loading = false;
+					page++;
+				}
+				$("div.loading").css("opacity", 0);
+			});
 	 	}
 	});
 
@@ -295,7 +290,7 @@ include("res/php/helpers.php");
 			if(data.length > 0) {
 				$("ul.tile-list").html(data);
 				loading = false;
-				curpage = 1;
+				page = 1;
 				console.log("loaded");
 			} else {
 				$("ul.tile-list").html("<div class=\"wrapped error\">nothing found!</div>");
@@ -317,14 +312,14 @@ include("res/php/helpers.php");
 				"<li class='menu-delete file'><span><i class='fa fa-trash-o'></i> Delete</span></li>"
 			]).show().css({top: y + 15, left: x + 10});
 		} else {
-			var link = "<?php echo($_SERVER['SERVER_NAME']."/".$_SESSION["initial"].$dir."/");?>"+name;
+			var link = "http://push.anukthewolf.com/<?php echo($_SESSION["initial"].$dir."/");?>"+name;
 			$("ul.contextMenu").append([
-				"<li class='menu-name'><span><i class='fa fa-file-o'></i> "+name+"</span></li>",
-				"<li class='menu-copy copyable' data-clipboard-text='"+link+"'><span><i class='fa fa-files-o'></i> Copy Link</span></li>",
+				"<li class='menu-name copyable' data-clipboard-text='"+link+"'><span><i class='fa fa-file-o'></i> "+name+"</span></li>",
 				"<li class='menu-rename file'><span><i class='fa fa-pencil-square-o'></i> Rename</span></li>",
 				"<li class='menu-move file'><span><i class='fa fa-folder-open-o'></i> Move</span></li>",
 				"<li class='menu-delete file'><span><i class='fa fa-trash-o'></i> Delete</span></li>"
 			]).show().css({top: y + 15, left: x + 10});
+			hookClipboard();
 		}
 	}
 
@@ -488,18 +483,18 @@ include("res/php/helpers.php");
 					folder: '<?php echo($dir);?>',
 					files: (selectedItems.length > 0 ? getSelectedItemNames() : clickedItem.data('name'))
 				}
-				}).done(function(data) {
-					if(data == "success") {
-						if(selectedItems.length > 0) {
-							jQuery.each(selectedItems,function(index, item) {
-								item.remove();
-							});
-						} else {
-							clickedItem.remove();
-						}	
-						clear_selection();
-					}
-				});
+			}).done(function(data) {
+				if(data == "success") {
+					if(selectedItems.length > 0) {
+						jQuery.each(selectedItems,function(index, item) {
+							item.remove();
+						});
+					} else {
+						clickedItem.remove();
+					}	
+					clear_selection();
+				}
+			});
 		    }
 		});
 	});
