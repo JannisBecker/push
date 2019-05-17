@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  web:
+    build: ./docker/web
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    links: 
+      - db
+    volumes: 
+      - ${DOCUMENT_ROOT-./}:/var/www/html
+  db:
+    image: mysql:8.0
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: <mysql pw>
+  
