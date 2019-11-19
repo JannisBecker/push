@@ -1,13 +1,13 @@
 # push file manager
+**This project is unmaintained and insecure!** It will be replaced by a version 3 rework using modern technologies
+and security improvements. It's been a personal project that worked well for me in the past.
+
 ![Website Preview](https://raw.githubusercontent.com/JannisBecker/push/master/res/img/readme-header.png)
 
 ## Introduction
 This is a slim and performant implementation of a web file management service,
 including file upload, rename, move and removal capabilities, folder support, user accounts,
 batch file operations and more!
-
-## Interactive demo
-I hosted a demo on my website, which can be found [here](http://pushdemo.jannisbecker.me).
 
 ## First setup
 First of all, use the /res/sql/push-db.sql file to set up the required MySQL databases. 
